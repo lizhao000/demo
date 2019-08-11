@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="public/public :: #public_head">
+
+</head>
+<body>
+<div th:replace="public/public :: #public_leftMeun">
+    <!-- 左侧菜单栏目块 -->
+</div>
+<div id="rightContent">
+    <div class="right">
+    <div class="location">
+        <span>供应商管理>>信息查看</span>
+    </div>
+    <div class="check-div form-inline">
+<div class="providerView">
+    <p><strong>供应商编号：</strong><span th:text="${provider.pid}">PRO-CODE—001</span></p>
+    <p><strong>编码：</strong><span th:text="${provider.providerCode}">15918230478</span></p>
+    <p><strong>供应商名称：</strong><span th:text="${provider.providerName}">测试供应商001</span></p>
+    <p><strong>联系人：</strong><span th:text="${provider.people}">韩露</span></p>
+    <p><strong>联系电话：</strong><span th:text="${provider.phone}">15918230478</span></p>
+    <p><strong>联系地址：</strong><span th:text="${provider.address}">15918230478</span></p>
+    <p><strong>传真：</strong><span th:text="${provider.fax}">15918230478</span></p>
+    <p><strong>描述：</strong><span th:text="${provider.describe}">描述</span></p>
+    <input class="btn btn-xs btn-default" type="button" value="返回" onclick="history.back(-1)"/>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

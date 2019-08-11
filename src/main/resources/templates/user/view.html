@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="public/public :: #public_head">
+
+</head>
+<body>
+<div th:replace="public/public :: #public_leftMeun">
+    <!-- 左侧菜单栏目块 -->
+</div>
+<div id="rightContent">
+    <div class="right">
+    <div class="location">
+        <span>用户管理>>信息查看</span>
+    </div>
+    <div class="check-div form-inline">
+<div class="userView">
+    <p><strong>用户名：</strong><span th:text="${user.username}"></span></p>
+    <p><strong>真实姓名：</strong><span th:text="${user.realName}"></span></p>
+    <p><strong>性别：</strong><span th:text="${user.gender==1?'女':'男'}"></span></p>
+    <p><strong>出生日期：</strong><span th:text="${#dates.format(user.birthday, 'yyyy-MM-dd')}"></span></p>
+    <p><strong>用户类型：</strong><span th:text="${user.userType==1?'管理员':(user.userType==2?'经理':'普通用户')}"></span></p>
+    <input class="btn btn-xs btn-default" type="button" value="返回" onclick="history.back(-1)"/>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

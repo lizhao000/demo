@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="public/public :: #public_head">
+</head>
+<body>
+<div th:replace="public/public :: #public_leftMeun">
+    <!-- 左侧菜单栏目块 -->
+</div>
+<div id="rightContent">
+    <!--用户管理模块-->
+    <div role="tabpanel" class="tab-pane" id="bill">
+        <div class="check-div form-inline">
+            <div class="col-xs-2">
+                <button class="btn btn-yellow btn-xs" data-toggle="modal" data-target="#addUser">添加用户</button>
+            </div>
+            <div class="col-xs-10 search">
+                <form th:action="@{bills}" id="searchForm">
+                    <span>商品名称：</span>
+                    <input type="text" th:value="${billName}"name="billName" class="form-control input-sm" placeholder="请输入商品的名称">
+                    <span>供应商：</span>
+                    <select name="pid" >
+                        <option value=""  >--请选择--</option>
+                        <option value="" th:selected="${p.pid == pid}" th:each="p : ${providers}"  th:value="${p.pid}" th:text="${p.providerName}" >北京市粮油总公司</option>
+                        <!--<option value="" th:selected="${pid == p.pid}" th:each="p : ${providers}" th:value="${p.pid}" th:text="${p.providerName}">-->
+                        北京市粮油总公司
+                        </option>
+                    </select>
+                    <span>是否付款：</span>
+                    <select name="pay" >
+                        <option value="">--请选择--</option>
+                        <option value="0" th:selected="${pay == 0}" >未付款</option>
+                        <option value="1" th:selected="${pay == 1}">已付款</option>
+                    </select>
+                    <button class="btn btn-white btn-xs" onclick="$('#searchForm').submit()">查 询</button>
+                </form>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover table-condensed">
+            <tr class="firstTr">
+                <th class="success" width="10%">账单编码</th>
+                <th class="success" width="20%">商品名称</th>
+                <th class="success" width="20%">供应商</th>
+                <th class="success" width="10%">总金额</th>
+                <th class="success" width="10%">是否付款</th>
+                <th class="success" width="10%">创建时间</th>
+                <th class="success" width="20%">操作</th>
+            </tr>
+            <tr th:each="b : ${bills}">
+                <td class="warning" th:text="${b.billCode}">213</td>
+                <td class="warning" th:text="${b.billName}">123</td>
+                <td class="warning" th:text="${b.providerName}">1</td>
+                <td class="warning" th:text="${b.money}">1000</td>
+                <td class="warning" th:text="${b.pay == 1 ? '已付款' : '未付款'}">未付款</td>
+                <td class="warning" th:text="${#dates.format(b.createDate, 'yyyy-MM-dd')}"></td>
+                <td class="warning">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a th:href="@{/bill/} + ${b.bid}" href="view.html"><img th:src="@{/img/read.png}"
+                                                                                src="../img/read.png" alt="查看"
+                                                                                title="查看"/></a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a th:href="@{/bill/} + ${b.bid}+'?type=update'" href="update.html"><img
+                            th:src="@{/img/xiugai.png}" src="../img/xiugai.png" alt="修改" title="修改"/></a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a th:attr="del_uri=@{/billde/}+${b.bid}"data-toggle="modal" data-target="#deleteUser"class="delete"><img th:src="@{/img/schu.png}"
+                                                                                                                                  src="../img/schu.png"
+                                                                                                                                  alt="删除" title="删除"/></a>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+<!--页码块-->
+<footer class="footer">
+    <ul class="pagination pagination-lg">
+        <li>
+            第[[(${pageNum})]]/[[(${totalPages})]]页
+        </li>
+
+        <li  class="active">
+            <a  th:if="${not isFirstPage}" th:href="@{${'bills'}(pageNum=${1},pageSize=${pageSize},pageSize=${pageSize},billName=${billName},pid=${pid},pay=${pay})}">
+                <span>首页</span>
+            </a>
+            <a th:if="${isFirstPage}">
+                <span>首页</span>
+            </a>
+        </li>
+
+        <li  class="active">
+            <a  th:if="${not isFirstPage}" th:href="@{${'bills'}(pageNum=${pageNum-1},pageSize=${pageSize},billName=${billName},pid=${pid},pay=${pay})}">
+                <span>上一页</span>
+                <span>&laquo;</span>
+            </a>
+            <a th:if="${isFirstPage}">
+                <span>上一页</span>
+                <span>&laquo;</span>
+            </a>
+        </li>
+
+        <li  class="active" th:each="pageNo : ${#numbers.sequence(1,totalPages)}">
+            <a th:if="${pageNum eq pageNo}">
+                <span th:text="${pageNo}"></span>
+            </a>
+
+            <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'bills'}(pageNum=${pageNo},pageSize=${pageSize},billName=${billName},pid=${pid},pay=${pay})}">
+                <span th:text="${pageNo}"></span>
+            </a>
+        </li>
+
+        <li  class="active">
+            <a th:if="${not isLastPage}" th:href="@{${'bills'}(pageNum=${pageNum+1},pageSize=${pageSize},billName=${billName},pid=${pid},pay=${pay})}">
+                <span>&raquo;</span>
+                <span>下一页</span>
+            </a>
+            <a th:if="${isLastPage}">
+                <span >&raquo;</span>
+                <span>下一页</span>
+            </a>
+        </li>
+        <li  class="active">
+            <a  th:if="${not isLastPage}" th:href="@{${'bills'}(pageNum=${totalPages},pageSize=${pageSize},billName=${billName},pid=${pid},pay=${pay})}">
+                <span>末页</span>
+            </a>
+            <a th:if="${isLastPage}">
+                <span>末页</span>
+            </a>
+        </li>
+        <li>
+            <form id="form" th:action="@{bills}">
+                <input th:type="hidden" th:value="${billName}" name="billName" >
+                <input th:type="hidden" th:value="${pid}" name="pid">
+                <input th:type="hidden" th:value="${pay}" name="pay">
+                第
+                <input type="text"name="pageNum" size="5">
+                页<input class="btn btn-xs btn-green" type="button" value="确定" onclick=$("#form").submit();>
+            </form>
+        <li>
+            总条数[[(${Total})]]
+        </li>
+
+        </li>
+    </ul>
+</footer>
+
+<!--弹出添加用户窗口-->
+<div class="modal fade" id="addUser" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="gridSystemModalLabel">添加用户</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form class="form-horizontal" id="addForm" th:action="@{/bill}">
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">账单编码:</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" name="billCode" placeholder="请输入订单编码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">商品名称:</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" name="billName" placeholder="请输入商品名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label" >商品单位：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" name="billCom" placeholder="请输入商品单位">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">商品数量：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi"name="billNum" placeholder="请输入商品数量">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">总金额：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" name="money" placeholder="请输入总金额小数点后保留2位">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">供应商:</label>
+                            <div class="col-xs-8">
+                            <select class=" form-control select-duiqi" name="pid">
+                                <option value=""  >--请选择--</option>
+                                <option value="" th:each="p : ${providers}"  th:value="${p.pid}" th:text="${p.providerName}" ></option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-8">
+                                <label >是否付款：</label>
+                                <input type="radio" value="0" name="pay" checked />未付款
+                                <input type="radio" value="1" name="pay"/>已付款
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="col-xs-8">
+                    <input class="btn btn-xs btn-green" type="button" value="保存" onclick="$('#addForm').submit();"/>
+                    <button type="button" class="btn btn-xs btn-white" data-dismiss="modal">取 消</button>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--弹出删除用户警告窗口-->
+
+<div class="modal fade" id="deleteUser" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form class="form-horizontal" id="deleteForm">
+                    </form>
+                    确定要删除供应商？删除后不可恢复！
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-8">
+                    <input class="btn btn-xs btn-green" type="button" value="确定" onclick=$("#deleteForm").attr("action",$(this).attr("del_uri")).submit();>
+                    <button type="button" class="btn btn-xs btn-white" data-dismiss="modal">取 消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/js.js}"></script>
+</body>
+</html>

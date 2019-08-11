@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="public/public :: #public_head">
+
+</head>
+<body>
+<div th:replace="public/public :: #public_leftMeun">
+    <!-- 左侧菜单栏目块 -->
+</div>
+<div id="rightContent">
+    <a class="toggle-btn" id="nimei">
+        <i class="glyphicon glyphicon-align-justify"></i>
+    </a>
+    <!--用户管理模块-->
+    <div role="tabpanel" class="tab-pane" id="user">
+        <div class="check-div form-inline">
+            <div class="col-xs-3">
+                <button class="btn btn-yellow btn-xs" data-toggle="modal" data-target="#addUser">添加用户</button>
+            </div>
+            <div class="col-xs-4">
+                <form th:action="@{user}" id="searchForm">
+                <input type="text" th:value="${username}" name="username"class="form-control input-sm" placeholder="输入文字搜索">
+                <button class="btn btn-white btn-xs" onclick="$('#searchForm').submit()">查 询</button>
+                </form>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover table-condensed">
+            <tr class="firstTr">
+                <th  class="success" width="20%">用户名</th>
+                <th  class="success" width="10%">真实姓名</th>
+                <th  class="success" width="10%">性别</th>
+                <th  class="success" width="20%">出生日期</th>
+                <th  class="success" width="10%">用户类型</th>
+                <th  class="success" width="30%">操作</th>
+
+            </tr>
+            <tr th:each="u : ${users}">
+                <td class="warning"  th:text="${u.username}">hanlu</td>
+                <td class="warning"  th:text="${u.realName}">韩露</td>
+                <!--性别：1 女  2 男-->
+                <td class="warning"  th:text="${u.gender == 1 ? '女' : '男'}">女</td>
+                <td class="warning"  th:text="${#dates.format(u.birthday, 'yyyy-MM-dd')}">1989/10/10</td>
+                <!--1管理员  2经理  3普通用户-->
+                <td class="warning"  th:text="${u.userType==1 ? '管理员' : (u.userType==2 ? '经理' : '普通用户') }">经理</td>
+                <td class="warning" >
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a th:href="@{/user/} + ${u.id}" href="view.html"><img th:src="@{/img/read.png}"
+                                                                           src="../img/read.png" alt="查看"
+                                                                           title="查看"/></a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a th:href="@{/user/} + ${u.id} +'?type=update'" href="update.html"><img th:src="@{/img/xiugai.png}"
+                                                                                             src="../img/xiugai.png"
+                                                                                             alt="修改" title="修改"/></a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a th:attr="del_uri=@{/userdelete/}+${u.id}"data-toggle="modal" data-target="#deleteUser"class="delete"><img th:src="@{/img/schu.png}"
+                                                                                                                                  src="../img/schu.png"
+                                                                                                                                  alt="删除" title="删除"/></a>
+
+                </td>
+            </tr>
+        </table>
+    <!--页码块-->
+        <footer class="footer">
+            <ul class="pagination pagination-lg">
+                <li>
+                    第[[(${pageNum})]]/[[(${totalPages})]]页
+                </li>
+                <li  class="active">
+                    <a  th:if="${not isFirstPage}" th:href="@{${'user'}(pageNum=${1},pageSize=${pageSize},username=${username})}">
+                        <span>首页</span>
+                    </a>
+                    <a th:if="${isFirstPage}">
+                        <span>首页</span>
+                    </a>
+                </li>
+                <li  class="active">
+                    <a  th:if="${not isFirstPage}" th:href="@{${'user'}(pageNum=${pageNum-1},pageSize=${pageSize},username=${username})}">
+                        <span>上一页</span>
+                        <span>&laquo;</span>
+                    </a>
+                    <a th:if="${isFirstPage}">
+                        <span>上一页</span>
+                        <span>&laquo;</span>
+                    </a>
+                </li>
+
+                <li  class="active" th:each="pageNo : ${#numbers.sequence(1,totalPages)}">
+                    <a th:if="${pageNum eq pageNo}">
+                        <span th:text="${pageNo}"></span>
+                    </a>
+
+                    <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'user'}(pageNum=${pageNo},pageSize=${pageSize},username=${username})}">
+                        <span th:text="${pageNo}"></span>
+                    </a>
+                </li>
+
+                <li  class="active">
+                    <a th:if="${not isLastPage}" th:href="@{${'user'}(pageNum=${pageNum+1},pageSize=${pageSize},username=${username})}">
+                        <span>&raquo;</span>
+                        <span>下一页</span>
+                    </a>
+                    <a th:if="${isLastPage}">
+                        <span >&raquo;</span>
+                        <span>下一页</span>
+                    </a>
+                </li>
+                <li  class="active">
+                    <a th:if="${not isLastPage}" th:href="@{${'user'}(pageNum=${totalPages},pageSize=${pageSize},username=${username})}">
+                        <span>末页</span>
+                    </a>
+                    <a th:if="${isLastPage}">
+                        <span >末页</span>
+                    </a>
+                </li>
+                <li>
+                    <form id="form" th:action="@{user}">
+                        <input th:type="hidden" th:value="${username}" name="username">
+                    第
+                    <input type="text"name="pageNum" size="5">
+                    页<input class="btn btn-xs btn-green" type="button" value="确定" onclick=$("#form").submit();>
+                    </form>
+                <li>
+                    总条数[[(${Total})]]
+                </li>
+
+                </li>
+            </ul>
+        </footer>
+
+        <!--弹出添加用户窗口-->
+    <div class="modal fade" id="addUser" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="gridSystemModal">添加用户</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form class="form-horizontal" id="addForm" th:action="@{adduser}">
+                            <div class="form-group">
+                                <label  class="col-xs-3 control-label">用户名：</label>
+                                    <div class="col-xs-8 ">
+                                    <input type="" class="form-control input-sm duiqi" name="username" id="username"placeholder="请输入用户名，且不能重复">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-xs-3 control-label">真实姓名：</label>
+                                <div class="col-xs-8">
+                                    <input type="text" class="form-control input-sm duiqi" name="realName" id="realName"placeholder="请输入真实姓名">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">用户密码：</label>
+                                <div class="col-xs-8">
+                                    <input type="password" class="form-control input-sm duiqi"  name="userpassword" id="userpassword" placeholder="密码长度必须大于6位小于20位">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">确认密码：</label>
+                                <div class="col-xs-8">
+                                    <input type="password" class="form-control input-sm duiqi"  name="password" id="password" placeholder="请输入确认密码">
+                                    <span id="pwdText"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-xs-3 control-label">用户性别：</label>
+                                <div class="col-xs-8">
+                                    <select class=" form-control select-duiqi" name="gender">
+                                        <option value="1">女</option>
+                                        <option value="2">男</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">出生日期：</label>
+                                <div class="col-xs-8">
+                                        <input type="" class="form-control input-sm duiqi" name="birthday" id="birthday" placeholder="日期格式 yyyy-mm-dd ">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-1"></div>
+                                <label class="control-label">用户类别：</label>
+                                <input type="radio" name="userType" value="1" />管理员
+                                <input type="radio" name="userType" value="2" checked/>经理
+                                <input type="radio" name="userType" value="3"/>普通用户
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-xs-8">
+                        <input class="btn btn-xs btn-green" type="button" value="保存"id="save"/>
+                        <button type="button" class="btn btn-xs btn-white" data-dismiss="modal">取 消</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!--弹出删除用户警告窗口-->
+    <div class="modal fade" id="deleteUser" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form class="form-horizontal" id="deleteForm">
+                        </form>
+                        确定要删除该用户？删除后不可恢复！
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-xs-8">
+                    <input class="btn btn-xs btn-green" type="button" value="确定" onclick=$("#deleteForm").attr("action",$(this).attr("del_uri")).submit();>
+                    <button type="button" class="btn btn-xs btn-white" data-dismiss="modal">取 消</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        //点击 确定
+        $('#save').click(function () {
+            //校验密码
+            if(
+                $("#userpassword").val() != $("#password").val()) {
+                $("#pwdText").replaceWith("<span id='pwdText' style='color: red'>两次输入的密码不一致</span>");
+                return;
+            }
+            $("#addForm").submit();
+        });
+
+    });
+</script>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/js.js}"></script>
+</body>
+</html>

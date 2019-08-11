@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="public/public :: #public_head">
+
+</head>
+<body>
+<div th:replace="public/public :: #public_leftMeun">
+    <!-- 左侧菜单栏目块 -->
+</div>
+<div id="rightContent">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form class="form-horizontal"  id="updateuser" th:action="@{/updateuser}">
+                        <input th:type="hidden" name="id" th:value="${user.id}">
+                        <input th:type="hidden" name="username" th:value="${user.username}">
+                        <input th:type="hidden" name="password" th:value="${user.password}">
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">真实姓名：</label>
+                            <div class="col-xs-8 ">
+                                <input type="" class="form-control input-sm duiqi" th:value="${user.realName}" name="realName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">用户性别：</label>
+                            <div class="col-xs-8">
+                                <select class=" form-control select-duiqi" name="gender">
+                                    <option value="1" th:selected="${user.gender == 1}">女</option>
+                                    <option value="0" th:selected="${user.gender == 0}">男</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">出生日期：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" th:value="${#dates.format(user.birthday, 'yyyy-MM-dd')}" name="birthday">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-2"></div>
+                            <label class="control-label">用户类别：</label>
+                            <input type="radio" name="userType" value="1" th:checked="${user.userType == 1}" />管理员
+                            <input type="radio" name="userType" value="2" th:checked="${user.userType == 2}"  checked/>经理
+                            <input type="radio" name="userType" value="3" th:checked="${user.userType == 3}" />普通用户
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-4">
+                    <input class="btn btn-xs btn-green" type="button" value="保存" onclick="$('#updateuser').submit();"/>
+                    <input class="btn btn-xs btn-default" type="button" value="返回" onclick="history.back(-1)"/>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+</div>
+</body>
+</html>

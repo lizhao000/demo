@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="public/public :: #public_head">
+
+</head>
+<body>
+<div th:replace="public/public :: #public_leftMeun">
+    <!-- 左侧菜单栏目块 -->
+</div>
+<div id="rightContent">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form class="form-horizontal"  id="updateForm" th:action="@{/updateprovider}">
+                        <input th:type="hidden" name="pid" th:value="${provider.pid}">
+                        <input th:type="hidden" name="providerCode" th:value="${provider.providerCode}">
+                        <div class="form-group ">
+                            <label class="col-xs-3 control-label">供应商名称:</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control input-sm duiqi" th:value="${provider.providerName}" name="providerName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">联系人：</label>
+                            <div class="col-xs-8 ">
+                                <input type="" class="form-control input-sm duiqi" th:value="${provider.people}" name="people">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">联系电话：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" th:value="${provider.phone}" name="phone" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">联系地址：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" th:value="${provider.address}" name="address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">传真：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" th:value="${provider.fax}" name="fax" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">描述：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" th:value="${provider.describe}" name="describe">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-4">
+                    <input class="btn btn-xs btn-green" type="button" value="保存" onclick="$('#updateForm').submit();"/>
+                    <input class="btn btn-xs btn-default" type="button" value="返回" onclick="history.back(-1)"/>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+</div>
+</body>
+</html>

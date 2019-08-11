@@ -1,0 +1,21 @@
+2019-05-22 21:08:30.970  INFO 9744 --- [restartedMain] com.example.Demo1Application             : Starting Demo1Application on USER-20190224TJ with PID 9744 (D:\workspace\demo2\target\classes started by Administrator in D:\workspace\demo2)
+2019-05-22 21:08:30.970  INFO 9744 --- [restartedMain] com.example.Demo1Application             : No active profile set, falling back to default profiles: default
+2019-05-22 21:08:31.198  WARN 9744 --- [restartedMain] o.m.s.mybatis.mapper.ClassPathMapperScanner      : No MyBatis mybatis.mapper was found in '[com.example]' package. Please check your configuration.
+2019-05-22 21:08:31.315  INFO 9744 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-05-22 21:08:31.315  INFO 9744 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-05-22 21:08:31.315  INFO 9744 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.16]
+2019-05-22 21:08:31.330  INFO 9744 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-05-22 21:08:31.331  INFO 9744 --- [restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 359 ms
+2019-05-22 21:08:31.379  INFO 9744 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-34} inited
+2019-05-22 21:08:31.380  INFO 9744 --- [Druid-ConnectionPool-Log-2104433162] c.a.d.p.DruidDataSourceStatLoggerImpl    : {"url":"jdbc:mysql://localhost:3306/users?serverTimezone=UTC","dbType":"mysql","name":"DataSource-2104433162","activeCount":0,"poolingCount":8,"poolingPeak":8,"poolingPeakTime":"2019-05-22 21:08:31","connectCount":0,"closeCount":0,"physicalConnectCount":8}
+2019-05-22 21:08:31.502  INFO 9744 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-05-22 21:08:31.540  WARN 9744 --- [restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2019-05-22 21:08:31.550  INFO 9744 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-05-22 21:08:31.586  INFO 9744 --- [restartedMain] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2019-05-22 21:08:31.636  INFO 9744 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2019-05-22 21:08:31.656  INFO 9744 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-05-22 21:08:31.657  INFO 9744 --- [restartedMain] com.example.Demo1Application             : Started Demo1Application in 0.712 seconds (JVM running for 927.057)
+2019-05-22 21:08:31.659  INFO 9744 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2019-05-22 21:08:39.300  INFO 9744 --- [Thread-213] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2019-05-22 21:08:39.300  INFO 9744 --- [Thread-213] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-05-22 21:08:39.302  INFO 9744 --- [Thread-213] com.alibaba.druid.pool.DruidDataSource   : {dataSource-34} closed

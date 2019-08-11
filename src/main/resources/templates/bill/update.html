@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="public/public :: #public_head">
+
+</head>
+<body>
+<div th:replace="public/public :: #public_leftMeun">
+    <!-- 左侧菜单栏目块 -->
+</div>
+<div id="rightContent">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form class="form-horizontal"  id="updateForm" th:action="@{/updatebill}">
+                        <input th:type="hidden" name="bid" th:value="${bill.bid}">
+                        <div class="form-group ">
+                            <label class="col-xs-3 control-label">账单编码:</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control input-sm duiqi" th:value="${bill.billCode}" name="billCode">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">商品名称：</label>
+                            <div class="col-xs-8 ">
+                                <input type="" class="form-control input-sm duiqi" th:value="${bill.billName}" name="billName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">商品单位：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" th:value="${bill.billCom}" name="billCom" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">商品数量：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" th:value="${bill.billNum}" name="billNum">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">总金额：</label>
+                            <div class="col-xs-8">
+                                <input type="" class="form-control input-sm duiqi" th:value="${bill.money}" name="money" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-xs-3 control-label">供应商:</label>
+                            <div class="col-xs-8">
+                                <select class=" form-control select-duiqi" name="pid">
+                                    <option value="" th:selected="${bill.pid == p.pid}" th:each="p : ${providers}"  th:value="${p.pid}" th:text="${p.providerName}" ></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-2"></div>
+                            <div class="col-xs-8">
+                                <label >是否付款：</label>
+                                <input type="radio" value="0" name="pay" th:checked="${bill.pay == 0}" checked />未付款
+                                <input type="radio" value="1" name="pay" th:checked="${bill.pay == 1}"/>已付款
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-xs-4">
+                    <input class="btn btn-xs btn-green" type="button" value="保存" onclick="$('#updateForm').submit();"/>
+                    <input class="btn btn-xs btn-default" type="button" value="返回" onclick="history.back(-1)"/>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+</div>
+</body>
+</html>
