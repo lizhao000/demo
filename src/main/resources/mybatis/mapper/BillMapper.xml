@@ -19,11 +19,6 @@
         </if>
     </select>
 
-    <select id="getBillByBid" resultType="com.example.entity.users.BillProvider">
-        select b.*, p.providerName from bill b left join provider p on b.pid = p.pid
-        where b.bid = #{bid}
-    </select>
-
     <insert id="addBill" >
         INSERT INTO `bill` ( `bill_code`, `bill_name`, `bill_com`, `bill_num`, `money`, `pay`, `pid`, `create_date`)
         VALUES ( #{billCode}, #{billName}, #{billCom}, #{billNum}, #{money}, #{pay}, #{pid}, now());
@@ -39,4 +34,14 @@
         delete from bill where bid=#{bid}
     </delete>
 
+    <update id="batchDelete" parameterType="java.util.List">
+        update bill
+        set is_deleted = 'Y'
+        where bid
+        in (
+        <foreach collection="list" index="index" item="bid" separator=",">
+            #{bid}
+        </foreach>
+        )
+    </update>
 </mapper>

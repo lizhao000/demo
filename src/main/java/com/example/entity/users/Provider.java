@@ -31,20 +31,6 @@ public class Provider implements Serializable {
     private String describe;
     // 创建时间
     private Date createDate;
-
-    public Provider() {
-    }
-
-    public Provider(Integer pid, String providerCode, String providerName, String people, String phone, String address, String fax, String describe) {
-        this.pid = pid;
-        this.providerCode = providerCode;
-        this.providerName = providerName;
-        this.people = people;
-        this.phone = phone;
-        this.address = address;
-        this.fax = fax;
-        this.describe = describe;
-        this.createDate = new Date();
-    }
-
+    // 批量删除 N 沒刪除 ， Y 是刪除
+    private String isDeleted;
 }

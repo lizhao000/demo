@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProviderServiceImpl implements ProviderService {
+public class ProviderServiceImpl implements ProviderService{
     @Autowired
     ProviderMapper providerMapper;
     @Override
@@ -40,4 +40,9 @@ public class ProviderServiceImpl implements ProviderService {
         int i = providerMapper.updateProvider(provider);
         return i;
     }
+    @Override
+    public int batchDelete(List<Long> ids){
+        return providerMapper.batchDelete(ids);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.dao;
 
 
 import com.example.entity.users.Provider;
+import io.lettuce.core.dynamic.annotation.Param;
 
 import java.util.List;
 
@@ -21,5 +22,9 @@ public interface ProviderMapper {
     int deleteProviderByPid(Integer pid);
 
     int updateProvider(Provider provider);
+
+    int batchDelete(@Param("list") List<Long> ids);
+
+    List<Provider> getProvideris(@Param("isDeleted")String isDeleted);
 
 }

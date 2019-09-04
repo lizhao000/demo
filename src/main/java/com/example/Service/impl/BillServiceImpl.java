@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class BillServiceImpl implements BillService {
+public class BillServiceImpl implements BillService{
     @Autowired
     BillMapper billMapper;
     @Override
@@ -39,4 +39,10 @@ public class BillServiceImpl implements BillService {
         billMapper.deteleBillByBid(bid);
         return 0;
     }
+
+    @Override
+    public int batchDelete(List<Long> ids) {
+        return billMapper.batchDelete(ids);
+    }
+
 }

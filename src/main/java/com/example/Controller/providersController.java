@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +19,8 @@ public class providersController {
     public String providers(Map map, Provider provider, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize){
         PageHelper.startPage(pageNum, pageSize);//引入分页查询，使用PageHelper分页功能在查询之前传入当前页，然后多少记录
         List <Provider> providers = providerService.getProviders(provider);//startPage后紧跟的这个查询就是分页查询
-        PageInfo pageInfo = new PageInfo<Provider>(providers, 5); //使用PageInfo包装查询结果，只需要将pageInfo交给页面就可以
+        PageInfo pageInfo = new PageInfo<Provider>(providers); //使用PageInfo包装查询结果，只需要将pageInfo交给页面就可以
         map.put("pageInfo", pageInfo);
-//        Cookie cookie = new Cookie("provider",provider.getProviderName());
-//        response.addCookie(cookie);
         //获得当前页
         map.put("pageNum", pageInfo.getPageNum());
         //获得一页显示的条数
@@ -70,5 +66,10 @@ public class providersController {
     public String delete(@PathVariable("pid") Integer pid) {
         providerService.deleteProviderByPid(pid);
         return "redirect:/providers";
+    }
+    @RequestMapping("/deleteprovider")
+    public String deleteprovider(@RequestBody List<Long> ids) {
+        providerService.batchDelete(ids);
+        return "redirect:/bills";
     }
 }

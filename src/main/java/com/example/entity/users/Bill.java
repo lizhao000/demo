@@ -22,31 +22,10 @@ public class Bill implements Serializable {
     private Provider provider;
     //供应商id
     private Integer pid;
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
-
     // 是否付款 0 未付款， 1已付款
     private Integer pay;
     // 创建时间
     private Date createDate;
-    public Bill() {}
-
-    public Bill(Integer bid, String billCode, String billName, String billCom, Integer billNum, Double money, Provider provider, Integer pay) {
-        this.bid = bid;
-        this.billCode = billCode;
-        this.billName = billName;
-        this.billCom = billCom;
-        this.billNum = billNum;
-        this.money = money;
-        this.provider = provider;
-        this.pay = pay;
-        this.createDate = new Date();
-    }
-
+   // 批量删除 N 沒刪除 ， Y 是刪除
+//    private String isDeleted;
 }

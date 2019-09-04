@@ -10,7 +10,25 @@
             <!--${} 用于字符串拼接-->
             and providerName like '%${providerName}%'
         </if>
+        <!--<if test="isDeleted==N">-->
+            <!--&lt;!&ndash;${} 用于字符串拼接&ndash;&gt;-->
+            <!--and is_deleted=#isDeleted-->
+        <!--</if>-->
     </select>
+    <!--<select id="getProvideris" resultType="com.example.entity.users.Provider">-->
+         <!--select * from provider where is_deleted=#{isDeleted}-->
+    <!--</select>-->
+
+    <update id="batchDelete">
+            update provider
+            set is_deleted = 'Y'
+            where pid
+            in
+            <foreach collection="list" item="pid" open="(" separator="," close=")" >
+                #{pid}
+            </foreach>
+    </update>
+
 
     <select id="getProviderByPid" resultType="com.example.entity.users.Provider">
         select * from provider where pid=#{pid}

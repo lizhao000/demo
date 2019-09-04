@@ -15,22 +15,24 @@
             </div>
             <div class="col-xs-4">
                 <form th:action="@{providers}" id="searchForm">
-                    <input type="text" th:value="${provider}"name="providerName" class="form-control input-sm" placeholder="请输入供应商的名称">
+                    <input type="search" th:value="${provider}"name="providerName" class="form-control input-sm" placeholder="请输入供应商的名称">
                     <button class="btn btn-white btn-xs" onclick="$('#searchForm').submit()">查 询</button>
                 </form>
             </div>
         </div>
         <table class="table table-bordered table-hover table-condensed">
             <tr class="firstTr">
+                <th class="success" width="10">全选<input type="checkbox" id="checkall"></th>
                 <th class="success" width="10%">供应商编</th>
                 <th class="success" width="20%">供应商名称</th>
                 <th class="success" width="10%">联系人</th>
                 <th class="success" width="10%">联系电话</th>
                 <th class="success" width="15%">传真</th>
                 <th class="success" width="10%">创建时间</th>
-                <th class="success" width="20%">操作</th>
+                <th class="success" width="20%">操作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="btn btn-xs btn-danger" type="button" value="删除" id="elDelete"></th>
             </tr>
             <tr th:each="p : ${providers}">
+                <td class="warning"><input type="checkbox" name="check" th:value="${p.pid}"></td>
                 <td class="warning" th:text="${p.pid}">PRO-CODE—001</td>
                 <td class="warning" th:text="${p.providerName}">测试供应商001</td>
                 <td class="warning" th:text="${p.people}">韩露</td>
@@ -59,7 +61,7 @@
 <footer class="footer">
     <ul class="pagination pagination-lg">
         <li>
-            第[[(${pageNum})]]/[[(${totalPages})]]页
+            [[(${pageNum})]]/[[(${totalPages})]]页
         </li>
         <li  class="active">
             <a  th:if="${not isFirstPage}" th:href="@{${'providers'}(pageNum=${1},pageSize=${pageSize},providerName=${provider})}">
@@ -225,5 +227,49 @@
 </div>
 <script th:src="@{/js/jquery.js}"></script>
 <script th:src="@{/js/js.js}"></script>
+<script type="text/javascript">
+    $("#checkall").click(function(){
+        //全选按钮check状态，选择全部name为bookname的按钮
+        if(this.checked){
+            $("input[name='check']").prop('checked', true);
+
+        }
+//全部取消选中
+        else{
+            $("input[name='check']").prop('checked', false);
+        }
+    });
+    $("#elDelete").click(function () {
+        var checkedNum = $("input[name='check']:checked").length;
+        if (checkedNum == 0) {
+            window.alert("请至少选择一项!");
+            return false;
+        }
+        var ids = new Array();
+        $("input[name='check']:checked").each(function() {
+            ids.push($(this).val());
+        });
+        if(window.confirm('确定删除所选项目?')){
+            batchDelete(ids);
+        }else {
+            window.close();
+        }
+    });
+    function batchDelete(ids) {
+        $.ajax({
+            url: '/deleteprovider',
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json",
+            async: true,//异步请求
+            cache: false,
+            data: JSON.stringify(ids),//使用变量sendData
+            //执行成功的回调函数
+            success: function (data) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
 </body>
 </html>

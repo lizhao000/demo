@@ -15,4 +15,7 @@ public interface ProviderService {
     int deleteProviderByPid(Integer pid);
 
     int updateProvider(Provider provider);
+    
+    int batchDelete(List<Long> ids);
+
 }

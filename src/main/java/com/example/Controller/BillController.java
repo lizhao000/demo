@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +27,18 @@ public class BillController {
     @Autowired
     ProviderService providerService;
     @RequestMapping("/bills")
-    public String bills(Map map, Bill bill, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize){
+    public String bills(Map map, Bill bill, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,HttpServletResponse response){
         PageHelper.startPage(pageNum, pageSize);//引入分页查询，使用PageHelper分页功能在查询之前传入当前页，然后多少记录
         List <BillProvider> bills = billService.getBills(bill);// ;//startPage后紧跟的这个查询就是分页查询
         List <Provider> providers = providerService.getProviders(null);
-        PageInfo pageInfo = new PageInfo<BillProvider>(bills, 5); //使用PageInfo包装查询结果，只需要将pageInfo交给页面就可以
+        Cookie c1= new Cookie("billName",bill.getBillName());
+        Cookie c2 = new Cookie("pid",String.valueOf(bill.getPid()));
+        Cookie c3 = new Cookie("pay",String.valueOf(bill.getPay()));
+        c1.setMaxAge(24*60*60);// 设置过期时间1天，以秒为单位
+        response.addCookie(c1);
+        response.addCookie(c2);
+        response.addCookie(c3);
+        PageInfo pageInfo = new PageInfo<BillProvider>(bills); //使用PageInfo包装查询结果，只需要将pageInfo交给页面就可以
         map.put("pageInfo", pageInfo);
         //获得当前页
         map.put("pageNum", pageInfo.getPageNum());
@@ -74,6 +84,11 @@ public class BillController {
     @RequestMapping("/billde/{bid}")
     public String delete(@PathVariable("bid") Integer bid) {
         billService.deteleByBid(bid);
+        return "redirect:/bills";
+    }
+    @RequestMapping("/deletebills")
+    public String deletebills(@RequestBody List<Long> ids) {
+        billService.batchDelete(ids);
         return "redirect:/bills";
     }
 }

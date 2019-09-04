@@ -15,4 +15,7 @@ public interface BillService {
     int updateBill(Bill bill);
 
     int deteleByBid(Integer bid);
+
+    int batchDelete(List<Long> ids);
+
 }

@@ -63,7 +63,7 @@
         <footer class="footer">
             <ul class="pagination pagination-lg">
                 <li>
-                    第[[(${pageNum})]]/[[(${totalPages})]]页
+                    [[(${pageNum})]]/[[(${totalPages})]]页
                 </li>
                 <li  class="active">
                     <a  th:if="${not isFirstPage}" th:href="@{${'user'}(pageNum=${1},pageSize=${pageSize},username=${username})}">

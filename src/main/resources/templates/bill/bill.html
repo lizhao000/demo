@@ -15,6 +15,7 @@
             </div>
             <div class="col-xs-10 search">
                 <form th:action="@{bills}" id="searchForm">
+                    <!--<input th:type="hidden" name="isDeleted" th:value="${isDeleted}">-->
                     <span>商品名称：</span>
                     <input type="text" th:value="${billName}"name="billName" class="form-control input-sm" placeholder="请输入商品的名称">
                     <span>供应商：</span>
@@ -37,15 +38,17 @@
         </div>
         <table class="table table-bordered table-hover table-condensed">
             <tr class="firstTr">
+                <th class="success" width="5%">全选<input type="checkbox" id="checkall"></th>
                 <th class="success" width="10%">账单编码</th>
                 <th class="success" width="20%">商品名称</th>
                 <th class="success" width="20%">供应商</th>
                 <th class="success" width="10%">总金额</th>
                 <th class="success" width="10%">是否付款</th>
                 <th class="success" width="10%">创建时间</th>
-                <th class="success" width="20%">操作</th>
+                <th class="success" width="15%">操作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="btn btn-xs btn-danger" type="button" value="删除" id="elDelete"></th>
             </tr>
             <tr th:each="b : ${bills}">
+                <td class="warning"><input type="checkbox" name="check" th:value="${b.bid}"></td>
                 <td class="warning" th:text="${b.billCode}">213</td>
                 <td class="warning" th:text="${b.billName}">123</td>
                 <td class="warning" th:text="${b.providerName}">1</td>
@@ -130,6 +133,7 @@
                 <input th:type="hidden" th:value="${billName}" name="billName" >
                 <input th:type="hidden" th:value="${pid}" name="pid">
                 <input th:type="hidden" th:value="${pay}" name="pay">
+                <!--<input th:type="hidden" name="isDeleted" th:value="${isDeleted}">-->
                 第
                 <input type="text"name="pageNum" size="5">
                 页<input class="btn btn-xs btn-green" type="button" value="确定" onclick=$("#form").submit();>
@@ -243,5 +247,50 @@
 </div>
 <script th:src="@{/js/jquery.js}"></script>
 <script th:src="@{/js/js.js}"></script>
+<script type="text/javascript">
+    $("#checkall").click(function(){
+        //全选按钮check状态，选择全部name为bookname的按钮
+        if(this.checked){
+            $("input[name='check']").prop('checked', true);
+
+        }
+//全部取消选中
+        else{
+            $("input[name='check']").prop('checked', false);
+        }
+    });
+    $("#elDelete").click(function () {
+        var checkedNum = $("input[name='check']:checked").length;
+        if (checkedNum == 0) {
+            window.alert("请至少选择一项!");
+            return false;
+        }
+        var ids = new Array();
+        $("input[name='check']:checked").each(function() {
+            ids.push($(this).val());
+        });
+        if(window.confirm('确定删除所选项目?')){
+            batchDelete(ids);
+        }else {
+            window.close();
+        }
+    });
+    
+    function batchDelete(ids) {
+        $.ajax({
+            url: '/deletebills',
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json",
+            async: true,//异步请求
+            cache: false,
+            data: JSON.stringify(ids),//使用变量sendData
+            //执行成功的回调函数
+            success: function (data) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
 </body>
 </html>
